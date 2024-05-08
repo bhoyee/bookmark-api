@@ -47,7 +47,7 @@ describe('App e2e', () => {
             password: dto.password,
           })
           .expectStatus(400)
-          .inspect();
+          //.inspect();
         });
 
         it('should throw if password empty', () => {
@@ -58,7 +58,7 @@ describe('App e2e', () => {
             password: dto.email,
           })
           .expectStatus(400)
-          .inspect();
+         // .inspect();
         });
 
         it('should throw nothing provided', () => {
@@ -66,7 +66,7 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signup')
           .expectStatus(400)
-          .inspect();
+          //.inspect();
         });
 
         
@@ -76,7 +76,7 @@ describe('App e2e', () => {
           .post('/auth/signup')
           .withBody(dto)
           .expectStatus(201)
-          .inspect();
+        //  .inspect();
           
         });
       });
@@ -91,7 +91,7 @@ describe('App e2e', () => {
             password: dto.password,
           })
           .expectStatus(400)
-          .inspect();
+          //.inspect();
         });
 
         it('should throw if password empty', () => {
@@ -102,7 +102,7 @@ describe('App e2e', () => {
             password: dto.email,
           })
           .expectStatus(400)
-          .inspect();
+         // .inspect();
         });
 
         it('should throw nothing provided', () => {
@@ -110,7 +110,7 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signin')
           .expectStatus(400)
-          .inspect();
+         // .inspect();
         });
 
 
@@ -120,12 +120,24 @@ describe('App e2e', () => {
           .post('/auth/signin')
           .withBody(dto)
           .expectStatus(200)
-          .inspect();
+          .stores('userAt', 'access_token')
+         // .inspect();
         });
       });
   
     describe('User', () => {
-      describe('Get me', () =>{});
+      describe('Get me', () =>{
+        it('should get current user', () => {
+          return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .inspect();
+        })
+      });
       describe('Edit user', () =>{});
     });
 
@@ -133,8 +145,8 @@ describe('App e2e', () => {
       describe('Creatte bookmarks', () => {});
       describe('GGet bookmarks', () => {});
       describe('Get bookmark by id', () => {});
-      describe('Edit bookmark', () =>{});
-      describe('Delete bookmark', () =>{});
+      describe('Edit bookmark by id', () =>{});
+      describe('Delete bookmark by id', () =>{});
     });
   });
 
