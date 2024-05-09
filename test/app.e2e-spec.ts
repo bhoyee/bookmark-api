@@ -3,8 +3,9 @@ import { AppModule } from "../src/app.module";
 import  {Test} from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { PrismaService } from "../src/prisma/prisma.service";
-import passport from "passport";
+import passport, { authorize } from "passport";
 import { AuthDto } from "src/auth/dto";
+import { EditUserDto } from "src/user/dto";
 
 describe('App e2e', () => {
     let app: INestApplication;
@@ -138,7 +139,24 @@ describe('App e2e', () => {
           .inspect();
         })
       });
-      describe('Edit user', () =>{});
+
+      describe('Edit user', () =>{
+        it('should edit user', () => {
+          const dto: EditUserDto = {
+            firstName: 'Bhoye',
+            lastName: "Salisu",
+            email:'bolas@gmail.com',
+          };
+          return pactum
+            .spec()
+            .patch('/users')
+            .withHeaders({
+              Authorization: 'Bearer $S{userAt}',
+            })
+            .withBody(dto)
+            .expectStatus(200);
+        });
+      });
     });
 
     describe('Bookmarks', () => {
