@@ -143,7 +143,7 @@ describe('App e2e', () => {
       describe('Edit user', () =>{
         it('should edit user', () => {
           const dto: EditUserDto = {
-            firstName: 'Bhoye',
+            firstName: 'Bhoyee',
             lastName: "Salisu",
             email:'bolas@gmail.com',
           };
@@ -154,7 +154,9 @@ describe('App e2e', () => {
               Authorization: 'Bearer $S{userAt}',
             })
             .withBody(dto)
-            .expectStatus(200);
+            .expectStatus(200)
+            .expectBodyContains(dto.firstName)
+            .expectBodyContains(dto.email)
         });
       });
     });
@@ -170,3 +172,7 @@ describe('App e2e', () => {
 
   
 });
+
+function expectBodyContains(firstName: string) {
+  throw new Error("Function not implemented.");
+}
