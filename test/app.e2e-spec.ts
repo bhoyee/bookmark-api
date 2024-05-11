@@ -136,7 +136,7 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .inspect();
+          //.inspect();
         })
       });
 
@@ -162,7 +162,22 @@ describe('App e2e', () => {
     });
 
     describe('Bookmarks', () => {
-      describe('Creatte bookmarks', () => {});
+      describe('Get empty bookmarks', () => {
+        it("Should get bookmarks", () => {
+          return pactum
+          .spec()
+          .get('/bookmarks')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          // .withBody(dto)
+          .expectStatus(200)
+          .expectBody([])
+          //.inspect();
+
+        })
+      });
+      describe('Create bookmarks', () => {});
       describe('GGet bookmarks', () => {});
       describe('Get bookmark by id', () => {});
       describe('Edit bookmark by id', () =>{});
