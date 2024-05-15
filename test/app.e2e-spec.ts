@@ -193,7 +193,7 @@ describe('App e2e', () => {
           .withBody(dto)
           .expectStatus(201)
           .stores('bookmarkId', 'id')
-          .inspect();            
+          // .inspect();            
         })   
       });
 
@@ -223,7 +223,7 @@ describe('App e2e', () => {
           .withPathParams('id', '$S{bookmarkId}')
           .expectStatus(200)
           .expectBodyContains('$S{bookmarkId}')
-          .inspect();
+          // .inspect();
 
         });
       });
@@ -243,13 +243,37 @@ describe('App e2e', () => {
           .withPathParams('id', '$S{bookmarkId}')
           .withBody(dto)
           .expectStatus(200)
-          // .expectBodyContains('$S{bookmarkId}')
-          .inspect();
-
+          .expectBodyContains(dto.title)
+          .expectBodyContains(dto.description)
+       
         });
 
       });
-      describe('Delete bookmark by id', () =>{});
+
+      describe('Delete bookmark by id', () =>{
+        it("Should delete bookmark", () => {
+          return pactum
+          .spec()
+          .delete('/bookmarks/{id}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withPathParams('id', '$S{bookmarkId}')
+          .expectStatus(204)
+          
+        });
+
+        it('should get empty bookmarks', () => {
+          return pactum
+            .spec()
+            .get('/bookmarks')
+            .withHeaders({
+              Authorization: 'Bearer $S{userAt}',
+            })
+            .expectStatus(200)
+            .expectJsonLength(0);
+        })
+      });
     });
   });
 
